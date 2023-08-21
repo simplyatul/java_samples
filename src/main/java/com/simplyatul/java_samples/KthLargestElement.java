@@ -9,7 +9,7 @@ import java.util.*;
 
 public class KthLargestElement {
     public int findKthLargest(int[] nums, int k) {
-        //Queue<Integer> maxHeap = new PriorityQueue<Integer>(Comparator);
+    	// Comparator.reverseOrder() - requires java 1.8 or more
         PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
         for (int i: nums) {
             maxHeap.add(i);
