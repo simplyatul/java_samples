@@ -5,8 +5,16 @@ import java.util.Arrays;
 /**
  * 221. Maximal Square
  * https://leetcode.com/problems/maximal-square/?envType=study-plan-v2&envId=top-interview-150
+ * https://www.youtube.com/watch?v=MMr19RE7KYY&t=710s
+ * 
+ * Top Down Approach
+ * maximalSquareInt
+ * maximalSquareIntMem => Recursion with Memoization
  *
+ * Bottom Up Approach
+ * maximalSquareIntTabuler (w/ Memoization)
  */
+
 public class MaximalSquare 
 {
     public static int max = 0;
@@ -68,6 +76,37 @@ public class MaximalSquare
     }
 
 
+    public static int maximalSquareIntTabuler(int[][] matrix) {
+        int cols, rows = matrix.length;
+        if (rows > 0) {
+            cols = matrix[0].length; 
+        } else {
+            cols = 0;
+        }
+
+        int [][] dp = new int [rows+1][cols+1];
+        for(int []r: dp) {
+            Arrays.fill(r, 0);
+        }
+
+        for(int i=rows-1; i>=0; --i) {
+            for(int j=cols-1; j>=0; --j) {
+
+                int right = dp[i][j+1]; 
+                int diagonal = dp[i+1][j+1];
+                int down = dp[i+1][j]; 
+
+                if(matrix[i][j] == 1) {
+                    dp[i][j] = 1 + Math.min(right, Math.min(diagonal, down));
+                    max = Math.max(dp[i][j], max);
+                } else {
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        return 0;
+    }
+
     public static void main( String[] args )
     {
         int[][] i = {
@@ -84,24 +123,28 @@ public class MaximalSquare
         int[][] i3 = {
                 {1, 1, 1},
                 {1, 1, 1},
-                {1, 1, 1}
+                {1, 1, 0}
         };
 
         int [][] i4 = {
                 {0}
         };
         
-        int [][] target = i1;
+        int [][] i5 = {};
+        
+        int [][] target = i3;
         int [][] dp = new int [target.length][target[0].length];
         for(int [] row: dp) {
             Arrays.fill(row, -1);
         }
-        maximalSquareInt(0,0,i1);
+        maximalSquareInt(0,0,target);
         System.out.println("maximalSquareInt: " + max); max = 0; 
         
-        maximalSquareIntMem(0,0,i1, dp);
+        maximalSquareIntMem(0,0,target, dp);
         System.out.println("maximalSquareIntMem: " + max); max = 0;
         
+        maximalSquareIntTabuler(target);
+        System.out.println("maximalSquareIntTabuler: " + max); max = 0;
 
 //        char[][] c = {
 //                {'1', '1', '1'},
